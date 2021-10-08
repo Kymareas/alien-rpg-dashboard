@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "http-serve": "^1.0.1"
+  },
+  "name": "alien-rpg-dashboard",
+  "description": "Un tableau de bord pour le jeu de rôle Alien",
+  "version": "1.0.0",
+  "main": "main.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kymareas/alien-rpg-dashboard.git"
+  },
+  "author": "Lug Eslan",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/Kymareas/alien-rpg-dashboard/issues"
+  },
+  "homepage": "https://github.com/Kymareas/alien-rpg-dashboard#readme"
+}

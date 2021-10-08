@@ -1,0 +1,4 @@
+/node_modules
+/media/audio/*
+
+package-lock.json
