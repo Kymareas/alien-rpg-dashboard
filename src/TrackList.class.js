@@ -63,11 +63,16 @@ class TrackList {
     load(index) {
         return new Promise((resolve, reject) => {
             if (index in this.#tracks) {
-                this.#tracks[index].load();
+                if (!this.#tracks[index].isLoaded) {
+                    this.#tracks[index].load();
 
-                this.#tracks[index].addEventListener('loaded', () => {
+                    this.#tracks[index].addEventListener('loaded', () => {
+                        resolve(this.#tracks[index]);
+                    });
+                }
+                else {
                     resolve(this.#tracks[index]);
-                });
+                }
             }
         });
     }
