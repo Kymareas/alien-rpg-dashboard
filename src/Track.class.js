@@ -1,10 +1,12 @@
+import EventEmitter from './EventEmitter.class.js';
+
 /**
  * Track
  * @class
  * @constructor
  * @public
  */
-class Track {
+class Track extends EventEmitter {
 
     /**
      * The global AudioContext
@@ -56,13 +58,6 @@ class Track {
     #loaded;
 
     /**
-     * Callbacks triggered on event
-     * @property {Object}
-     * @private
-     */
-    #callbacks;
-
-    /**
      * Track start time
      * @property {number}
      * @private
@@ -78,17 +73,14 @@ class Track {
      * @param {boolean} [options.loop=false]    - loop the audio if true
      */
     constructor(context, src, options = {preload: false, loop: false}) {
+        super();
+        
         this.#context = context;
         this.#src = src;
         this.#preload = options.preload;
         this.#loop = options.loop;
         this.#loaded = false;
         this.#startTime = 0;
-
-        this.#callbacks = {
-            onLoad: () => {},
-            onEnd: () => {}
-        };
 
         this.#bufferSourceNode = this.#context.createBufferSource();
         this.#gainNode = this.#context.createGain();
@@ -99,28 +91,12 @@ class Track {
         this.#gainNode.connect(this.#context.destination);
 
         this.#bufferSourceNode.onended = () => {
-            this.#callbacks.onEnd(this);
+            this.dispatchEvent(new Event('ended'));
         };
 
         if (this.#preload === true) {
             this.load();
         }
-    }
-
-    /**
-     * Set the event triggered when the file is loaded
-     * @param {Function} callback   - Callback triggered when the audio file is loaded
-     */
-    set onLoad(callback) {
-        this.#callbacks.onLoad = callback;
-    }
-
-    /**
-     * Set the event triggered when the audio track end
-     * @param {Function} callback   - Callback triggered when the audio track end
-     */
-    set onEnd(callback) {
-        this.#callbacks.onEnd = callback;
     }
 
     /**
@@ -160,7 +136,7 @@ class Track {
                 this.#bufferSourceNode.buffer = audioBuffer;
                 this.#loaded = true;
                 this.volume = 0;
-                this.#callbacks.onLoad(this);
+                this.dispatchEvent(new Event('loaded'));
             });
         }
 
